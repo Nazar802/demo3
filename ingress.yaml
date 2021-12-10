@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  name: TeachUA-ingress
+
+spec:
+  rules:
+  - host: teachua.ua
+    http:
+      paths:
+      - backend:
+        service:
+          name: Frontend-service
+          port: 3000
