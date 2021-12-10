@@ -1,0 +1,42 @@
+apiVersion: v1
+
+kind: Deployment
+
+metadata:
+  name: Frontend-deployment
+  labels:
+    app: TeachUAFront
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: Frontend-deployment
+  template:
+    metadata:
+      labels:
+        app: TeachUAFront
+    spec:
+      containers:
+      - name: TeachUAFront
+        image: commonregistry646.azurecr.io/frontend:v1
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: Frontend-service
+
+spec:
+  selector:
+    app: TeachUAFront
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
