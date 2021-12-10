@@ -1,0 +1,67 @@
+apiVersion: v1
+
+kind: Deployment
+
+metadata:
+  name: Backend-deployment
+  labels:
+    app: TeachUABack
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: Backend-deployment
+  template:
+    metadata:
+      labels:
+        app: TeachUABack
+    spec:
+      containers:
+      - name: TeachUABack
+        image: commonregistry646.azurecr.io/backend:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: back-secret.yaml
+              key: DATASOURCE_URL
+        - name: DATASOURCE_USER
+          valueFrom:
+            secretKeyRef:
+              name: back-secret.yaml
+              key: DATASOURCE_USER
+        - name: DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-secret.yaml
+              key: DATASOURCE_PASSWORD
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: back-secret.yaml
+              key: JWT_SECRET
+        - name: MY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-secret.yaml
+              key: MY_PASSWORD
+---
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: Backend-service
+
+spec:
+  selector:
+    app: TeachUABack
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30001
