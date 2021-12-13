@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: TeachUABack
-        image: commonregistry646.azurecr.io/backend:v1
+        image: tomcat
         ports:
         - containerPort: 8080
         env:
