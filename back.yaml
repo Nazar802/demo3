@@ -4,22 +4,24 @@ kind: Deployment
 
 metadata:
   name: backend-deployment
-  labels:
-    app: teachuaback
 
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: teachuaback
+      app: teachua
+      tier: backend
+      track: stable
   template:
     metadata:
       labels:
-        app: teachuaback
+        app: teachua
+        tier: backend
+        track: stable
     spec:
       containers:
       - name: teachuaback
-        image: registry646.azurecr.io/backend:1.4
+        image: registry646.azurecr.io/backend:1.5
         ports:
         - containerPort: 8080
         env:
@@ -54,14 +56,14 @@ apiVersion: v1
 kind: Service
 
 metadata:
-  name: backend-service
+  name: teachua
 
 spec:
   selector:
-    app: teachuaback
+    app: teachua
+    tier: backend
   type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30001
