@@ -1,52 +1,52 @@
-apiVersion: v1
+apiVersion: apps/v1
 
 kind: Deployment
 
 metadata:
-  name: Backend-deployment
+  name: backend-deployment
   labels:
-    app: TeachUABack
+    app: teachuaback
 
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: TeachUABack
+      app: teachuaback
   template:
     metadata:
       labels:
-        app: TeachUABack
+        app: teachuaback
     spec:
       containers:
-      - name: TeachUABack
-        image: tomcat
+      - name: teachuaback
+        image: registry646.azurecr.io/backend:1.4
         ports:
         - containerPort: 8080
         env:
         - name: DATASOURCE_URL
           valueFrom:
             secretKeyRef:
-              name: back-secret.yaml
+              name: back-secret
               key: DATASOURCE_URL
         - name: DATASOURCE_USER
           valueFrom:
             secretKeyRef:
-              name: back-secret.yaml
+              name: back-secret
               key: DATASOURCE_USER
         - name: DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: back-secret.yaml
+              name: back-secret
               key: DATASOURCE_PASSWORD
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: back-secret.yaml
+              name: back-secret
               key: JWT_SECRET
         - name: MY_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: back-secret.yaml
+              name: back-secret
               key: MY_PASSWORD
 ---
 apiVersion: v1
@@ -54,11 +54,11 @@ apiVersion: v1
 kind: Service
 
 metadata:
-  name: Backend-service
+  name: backend-service
 
 spec:
   selector:
-    app: TeachUABack
+    app: teachuaback
   type: LoadBalancer
   ports:
     - protocol: TCP
