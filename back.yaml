@@ -57,7 +57,8 @@ kind: Service
 
 metadata:
   name: teachua
-
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: teachua-demo3-new
 spec:
   selector:
     app: teachua
