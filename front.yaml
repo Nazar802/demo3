@@ -32,8 +32,6 @@ kind: Service
 
 metadata:
   name: frontend-service
-  annotations:
-    service.beta.kubernetes.io/azure-dns-label-name: teachua
     
 spec:
   selector:
