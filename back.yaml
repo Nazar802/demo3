@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: teachuaback
-        image: registry646.azurecr.io/backend:1.5
+        image: registry646.azurecr.io/backend
         ports:
         - containerPort: 8080
         env:
