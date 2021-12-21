@@ -1,0 +1,37 @@
+throttle(['Lock']) {
+    node {
+        def remote = [:]
+        
+        withCredentials([file(credentialsId: 'ci', variable: 'key')]) {
+            remote.identityFile = key
+            remote.name = 'frontend'
+            remote.host = "${VMIP}"
+            remote.user = 'azureuser'
+            remote.allowAnyHosts = true    
+            
+            stage ('Cleanup') {
+                writeFile file: 'cleanup.sh', text:
+                "rm -rf teachfrontimage"
+                sshScript remote: remote, script: "cleanup.sh"
+            }
+            
+            stage ('Scm checkout') {
+                git branch: 'frontImage', url: 'https://github.com/Nazar802/demo3.git'
+                sshCommand remote: remote, command: "git clone --branch frontImage https://github.com/Nazar802/demo3.git teachfrontimage"
+            }
+    
+            stage ('Docker Build') {
+                writeFile file: 'build.sh', text: 
+                "cd ~/teachfrontimage\ndocker build . -t ${ACR_ADDR}/front:latest"
+                sshScript remote: remote, script: "build.sh"
+            }
+                
+            stage ('Docker Push') {
+                writeFile file: 'push.sh', text:
+                "docker push ${ACR_ADDR}/front:latest"
+                sshScript remote: remote, script: "push.sh"
+            }
+    
+        }
+    }
+}
