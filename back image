@@ -1,0 +1,37 @@
+throttle(['Lock']) {
+    node {
+        def remote = [:]
+        
+        withCredentials([file(credentialsId: 'ci', variable: 'key')]) {
+            remote.identityFile = key
+            remote.name = 'backend'
+            remote.host = "${VMIP}"
+            remote.user = 'azureuser'
+            remote.allowAnyHosts = true    
+            
+            stage ('Cleanup') {
+                writeFile file: 'cleanup.sh', text:
+                "rm -rf teachbackimage"
+                sshScript remote: remote, script: "cleanup.sh"
+            }
+            
+            stage ('Scm checkout') {
+                git branch: 'backImage', url: 'https://github.com/Nazar802/demo3.git'
+                sshCommand remote: remote, command: "git clone --branch backImage https://github.com/Nazar802/demo3.git teachbackimage"
+            }
+    
+            stage ('Docker Build') {
+                writeFile file: 'build.sh', text: 
+                "cd ~/teachbackimage\ndocker build . -t ${ACR_ADDR}/backend:latest"
+                sshScript remote: remote, script: "build.sh"
+            }
+                
+            stage ('Docker Push') {
+                writeFile file: 'push.sh', text:
+                "docker push ${ACR_ADDR}/backend:latest"
+                sshScript remote: remote, script: "push.sh"
+            }
+            
+        }
+    }
+}
