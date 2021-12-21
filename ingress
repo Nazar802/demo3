@@ -1,0 +1,31 @@
+throttle(['Lock']) {
+    node {
+        def remote = [:]
+        
+        withCredentials([file(credentialsId: 'ci', variable: 'key')]) {
+            remote.identityFile = key
+            remote.name = 'ingress'
+            remote.host = "${VMIP}"
+            remote.user = 'azureuser'
+            remote.allowAnyHosts = true    
+            
+            stage ('Cleanup') {
+                writeFile file: 'cleanup.sh', text:
+                "rm -rf ingress\nkubectl delete ing teachua-ingress || true"
+                sshScript remote: remote, script: "cleanup.sh"
+            }
+    
+            stage ('Scm checkout') {
+                git branch: 'ingress', url: 'https://github.com/Nazar802/demo3.git'
+                sshCommand remote: remote, command: "cd ~ && git clone --branch ingress https://github.com/Nazar802/demo3.git ingress"
+            }
+            
+            stage ('Kubectl apply') {
+                writeFile file: 'start.sh', text:
+                "kubectl apply -f ~/ingress/ingress.yaml"
+                sshScript remote: remote, script: "start.sh"
+            }
+            
+        }
+    }
+}
