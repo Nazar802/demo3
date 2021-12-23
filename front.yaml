@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: teachuafront
-        image: registry646.azurecr.io/frontend:1.20
+        image: registry646.azurecr.io/frontend:latest
         ports:
         - containerPort: 80
 
