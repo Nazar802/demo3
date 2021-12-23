@@ -1,4 +1,4 @@
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm repo update
 helm install prometheus prometheus-community/kube-prometheus-stack
-port-forwarding --address 0.0.0.0 deploy/prometheus-grafana
+port-forwarding --address 0.0.0.0 deploy/prometheus-grafana 3000
