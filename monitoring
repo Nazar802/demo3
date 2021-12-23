@@ -1,4 +1,17 @@
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-helm repo update
-helm install prometheus prometheus-community/kube-prometheus-stack
-port-forwarding --address 0.0.0.0 deploy/prometheus-grafana 3000
+node {
+    def remote = [:]
+    
+    withCredentials([file(credentialsId: 'ci', variable: 'key')]) {
+        remote.identityFile = key
+        remote.name = 'backend'
+        remote.host = "${VMIP}"
+        remote.user = 'azureuser'
+        remote.allowAnyHosts = true
+        
+        stage ('Start monitoring') {
+            writeFile file: 'start.sh', text:
+            "kubectl port-forward --address 0.0.0.0 deploy/prometheus-grafana --namespace=monitoring 3000"
+            sshScript remote: remote, script: "start.sh"
+        }
+    }
+}
