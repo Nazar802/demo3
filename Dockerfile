@@ -1,6 +1,6 @@
 FROM tomcat:9.0.54-jdk11-openjdk
 
-COPY dev.war /usr/local/tomcat/webapps/
+COPY target/dev.war /usr/local/tomcat/webapps/
 
 ENV DATASOURCE_URL $DATASOURCE_URL
 ENV DATASOURCE_USER $DATASOURCE_USER
