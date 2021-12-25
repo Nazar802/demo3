@@ -8,6 +8,12 @@ node {
         remote.user = 'azureuser'
         remote.allowAnyHosts = true
         
+        stage ('Install') {
+            writeFile file: 'start.sh', text:
+            "kubectl create namespace monitoring || true\nhelm upgrade --install prometheus --namespace monitoring stable/prometheus-operator --values values.yml || true"
+            sshScript remote: remote, script: "start.sh"
+        }
+        
         stage ('Start monitoring') {
             writeFile file: 'start.sh', text:
             "kubectl port-forward --address 0.0.0.0 deploy/prometheus-grafana --namespace=monitoring 3000"
