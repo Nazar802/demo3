@@ -28,7 +28,7 @@ resource "azurerm_public_ip" "k8s" {
   name                = "K8sPublick"
   location            = azurerm_resource_group.k8s.location
   resource_group_name = azurerm_resource_group.k8s.name
-  domain_name_label
+  domain_name_label   = "teach-ua-demo3"
   allocation_method   = "Dynamic"
   ip_version          = "IPv4"
 }
