@@ -19,16 +19,28 @@ throttle(['Lock']) {
                 git branch: 'frontImage', url: 'https://github.com/Nazar802/demo3.git'
                 sshCommand remote: remote, command: "git clone --branch frontImage https://github.com/Nazar802/demo3.git teachfrontimage"
             }
-    
+            
+            stage ('Npm install') {
+                writeFile file: 'install.sh', text: 
+                "cd ~/teachfrontimage\nnpm install"
+                sshScript remote: remote, script: "install.sh"
+            }
+            
+            stage ('Npm build') {
+                writeFile file: 'npmbuild.sh', text: 
+                "cd ~/teachfrontimage\nnpm run build\ncd build\nmkdir dev\nmv static dev"
+                sshScript remote: remote, script: "npmbuild.sh"
+            }
+            
             stage ('Docker Build') {
                 writeFile file: 'build.sh', text: 
-                "cd ~/teachfrontimage\ndocker build . -t ${ACR_ADDR}/front:latest"
+                "cd ~/teachfrontimage\ndocker build . -t ${ACR_ADDR}/frontend:latest"
                 sshScript remote: remote, script: "build.sh"
             }
                 
             stage ('Docker Push') {
                 writeFile file: 'push.sh', text:
-                "docker push ${ACR_ADDR}/front:latest"
+                "docker push ${ACR_ADDR}/frontend:latest"
                 sshScript remote: remote, script: "push.sh"
             }
     
