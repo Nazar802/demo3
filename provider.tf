@@ -28,13 +28,13 @@ resource "azurerm_public_ip" "k8s" {
   name                = "K8sPublick"
   location            = azurerm_resource_group.k8s.location
   resource_group_name = azurerm_resource_group.k8s.name
+  domain_name_label
   allocation_method   = "Dynamic"
   ip_version          = "IPv4"
 }
 
 resource "azurerm_dns_a_record" "k8s" {
   name                = "teachua-demo3-new"
-  name_servers        = "teach-ua-demo3-new"
   zone_name           = azurerm_dns_zone.k8s.name
   resource_group_name = azurerm_resource_group.k8s.name
   ttl                 = 300
@@ -43,7 +43,6 @@ resource "azurerm_dns_a_record" "k8s" {
 resource "azurerm_dns_a_record" "k8s2" {
   name                = "teachua"
   zone_name           = azurerm_dns_zone.k8s.name
-  name_servers        = "teach-ua-demo3-new"
   resource_group_name = azurerm_resource_group.k8s.name
   ttl                 = 300
   target_resource_id  = azurerm_public_ip.k8s.id
