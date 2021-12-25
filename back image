@@ -19,7 +19,13 @@ throttle(['Lock']) {
                 git branch: 'backImage', url: 'https://github.com/Nazar802/demo3.git'
                 sshCommand remote: remote, command: "git clone --branch backImage https://github.com/Nazar802/demo3.git teachbackimage"
             }
-    
+            
+            stage ('Mvn Package') {
+                writeFile file: 'package.sh', text: 
+                "cd ~/teachbackimage\nmvn package"
+                sshScript remote: remote, script: "package.sh"
+            }
+            
             stage ('Docker Build') {
                 writeFile file: 'build.sh', text: 
                 "cd ~/teachbackimage\ndocker build . -t ${ACR_ADDR}/backend:latest"
