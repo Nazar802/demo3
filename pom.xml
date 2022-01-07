@@ -154,7 +154,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>dev</finalName>
 
 		<plugins>
 
