@@ -162,7 +162,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dev.war</finalName>
+		<finalName>dev</finalName>
 
 		<plugins>
 
