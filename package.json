@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": false,
   "homepage": "http://localhost:8080/dev",
+  "publishConfig": {
+    "registry": "http://52.170.24.41:8081/repository/frontend/"
+  }
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@craco/craco": "^6.1.0",
