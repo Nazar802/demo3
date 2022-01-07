@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "http://localhost:8080/dev",
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
