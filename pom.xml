@@ -162,7 +162,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dev</finalName>
+		<finalName>${artifactID}-${version}</finalName>
 
 		<plugins>
 
