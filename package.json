@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": false,
-  "homepage": "http://localhost:8080/dev",
+  "homepage": "http://localhost:8080",
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@craco/craco": "^6.1.0",
