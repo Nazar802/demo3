@@ -1,2 +1,2 @@
 # demo3
-terraform
+image
