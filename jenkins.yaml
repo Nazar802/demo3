@@ -21,6 +21,11 @@
         repo: https://{{ ghUser }}:{{ ghToken }}@github.com/Nazar802/jenkinsimage.git
         dest: ~/auto
     
+    - name: copy key file
+      copy:
+        src: ~/secret/key.pem
+        dest: ~/auto
+
     - name: login to ACR
       docker_login:
         registry: "{{ acrAddress }}"
@@ -31,7 +36,7 @@
       docker_image:
         name: "{{ acrAddress }}/jenkins:ansible"
         build:
-          path: ~/auto/Dockerfile
-          source: build
-        state: present        
+          path: ~/auto
+        state: present
         push: yes
+        source: build
