@@ -11,12 +11,17 @@
 
 
     tasks:
-    - name: Use Shell commands to launch Jenkins
-      shell: |
-        rm -rf auto
-        "git clone https://{{ ghUser }}:{{ ghToken }}@github.com/Nazar802/jenkinsimage.git auto"
-        cd auto
-        cp /home/azureuser/secret/key.pem ~/auto/key.pem
-        "docker login {{ acrAddress }} -u{{ acrUsername }} -p{{ acrPassword }}"
-        "docker build . -t {{ acrAdderss }}/jenkins:latest"
-        "docker push {{ acrAddress }}/jenkins:latest"
+    - name: git clone
+      git:
+        repo: https://{{ ghUser }}:{{ ghToken }}@github.com/Nazar802/jenkinsimage.git
+        dest: ~/auto
+        
+
+      #shell: |
+      #  rm -rf auto
+      #  "git clone https://{{ ghUser }}:{{ ghToken }}@github.com/Nazar802/jenkinsimage.git auto"
+      #  cd auto
+      #  cp /home/azureuser/secret/key.pem ~/auto/key.pem
+      #  "docker login {{ acrAddress }} -u{{ acrUsername }} -p{{ acrPassword }}"
+      #  "docker build . -t {{ acrAdderss }}/jenkins:latest"
+      #  "docker push {{ acrAddress }}/jenkins:latest"
