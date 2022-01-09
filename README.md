@@ -1,2 +1,2 @@
 # demo3
-image
+tomcat image
