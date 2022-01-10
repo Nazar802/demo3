@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: CI
   become: true
 
   tasks:
