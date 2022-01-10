@@ -9,19 +9,19 @@
   
   
   - name: Get gpg key for NodeJs
-      apt_key:
-        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-        state: present
+    apt_key:
+      url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+      state: present
   
   
   - name: Update the nodejs LTS repos
-      apt_repository:
-        repo: "deb https://deb.nodesource.com/node_12.x"
-        state: present
-        update_cache: yes
+    apt_repository:
+      repo: deb https://deb.nodesource.com/node_12.x bionic stable
+      state: present
+      update_cache: yes
   
   
   - name: Install the nodejs
-      apt:
-        name: nodejs
-        state: present
+    apt:
+      name: nodejs
+      state: present
