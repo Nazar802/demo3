@@ -2,7 +2,8 @@
 # Simple playbook to install the Azure CLI
 # Based on <https://docs.microsoft.com/cli/azure/install-azure-cli-apt?view=azure-cli-latest>
 
-- hosts: localhost
+- hosts: 52.170.24.41
+
   become: yes
   tasks:
     - name: Get packages needed for the install process
