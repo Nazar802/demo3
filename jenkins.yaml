@@ -1,10 +1,10 @@
 ---
   - name: Launch Jenkins
-    hosts: 52.170.24.41
+    hosts: CI
     
     vars:
-      ghUser: "{{ githubUser }}"
-      ghToken: "{{ githubTocken }}"
+      ghUser: "{{ lookup('env', 'GITHUB_USER') }}"
+      ghToken: "{{ lookup('env', 'GITHUB_TOKEN') }}"
       acrAddress: "{{ lookup('env', 'ACR_ADDR') }}"
       acrUsername: "{{ lookup('env', 'ACR_UID') }}"
       acrPassword: "{{ lookup('env', 'ACR_PASS') }}"
