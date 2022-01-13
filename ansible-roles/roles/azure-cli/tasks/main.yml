@@ -1,0 +1,29 @@
+---
+- name: Get packages needed for the install process
+  apt:
+  - name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - aptitude
+    - curl
+    - apt-transport-https
+    - lsb-release
+    - gnupg
+
+- name: Import the Microsoft signing key into apt
+  apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+
+- name: Add the Azure CLI software repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ansible_distribution_release}} main"
+    filename: azure-cli
+    state: present
+
+- name: Update the apt cache and install the Azure CLI
+  apt:
+    name: azure-cli
+    update_cache: yes

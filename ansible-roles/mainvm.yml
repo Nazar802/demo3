@@ -1,0 +1,25 @@
+---
+- name: Deploy Terraform
+  hosts: all
+  gather_facts: False
+  become: true
+  roles:
+    - { role: terraform }
+
+- name: Install azure-cli
+  hosts: all
+  become: yes
+  roles:
+  - { role: azure-cli }
+
+- name: Install maven
+  hosts: all
+  become: yes
+  roles:
+  - { role: maven }
+
+- name: Install nodejs
+  hosts: all
+  become: yes
+  roles:
+  - { role: nodejs }

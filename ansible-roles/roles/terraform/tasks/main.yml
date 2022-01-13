@@ -1,0 +1,9 @@
+---
+- name: Yum Install Packages
+  apt: name=wget state=latest
+
+- name: terraform install
+  unarchive:
+    src: https://releases.hashicorp.com/terraform/1.1.3/terraform_1.1.3_linux_amd64.zip
+    dest: /usr/bin
+    remote_src: True
