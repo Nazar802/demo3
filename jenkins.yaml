@@ -42,6 +42,7 @@
       copy:
         src: ~/secret/key.pem
         dest: ~/auto
+        mode: '0400'
 
     - name: login to ACR
       docker_login:
