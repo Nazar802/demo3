@@ -1,6 +1,6 @@
 ---
   - name: Launch Jenkins
-    hosts: CI
+    hosts: all
     
     vars:
       ghUser: "{{ lookup('env', 'GITHUB_USER') }}"
