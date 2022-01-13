@@ -1,6 +1,6 @@
 ---
   - name: Launch Jenkins
-    hosts: CI
+    hosts: 52.170.24.41
 
 
     
