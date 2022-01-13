@@ -1,0 +1,98 @@
+--- 
+- name: remove old repo
+  file:
+    state: absent
+    path: ~/auto
+
+- name: git clone
+  vars:
+    ghUser: "{{ lookup('env', 'GITHUB_USER') }}"
+    ghToken: "{{ lookup('env', 'GITHUB_TOKEN') }}"
+  git:
+    repo: https://{{ ghUser }}:{{ ghToken }}@github.com/Nazar802/jenkinsimage.git
+    dest: ~/auto
+
+- name: copy key file
+  copy:
+    src: ~/secret/key.pem
+    dest: ~/auto
+
+- name: login to ACR
+  vars:
+    acrAddress: "{{ lookup('env', 'ACR_ADDR') }}"
+    acrUsername: "{{ lookup('env', 'ACR_UID') }}"
+    acrPassword: "{{ lookup('env', 'ACR_PASS') }}"
+  docker_login:
+    registry: "{{ acrAddress }}"
+    username: "{{ acrUsername }}"
+    password: "{{ acrPassword }}"
+
+- name: build and push docker image
+  docker_image:
+    name: "{{ acrAddress }}/jenkins:ansible"
+    build:
+      path: ~/auto
+    state: present
+    push: yes
+    source: build
+
+- name: remove old docker container
+  docker_container:
+    name: JenkinsTest
+    state: absent
+
+- name: run new docker container
+  
+  vars:
+    acrAddress: "{{ lookup('env', 'ACR_ADDR') }}"
+    acrUsername: "{{ lookup('env', 'ACR_UID') }}"
+    acrPassword: "{{ lookup('env', 'ACR_PASS') }}"
+    JENKINS_ADMIN_ID: "{{ lookup('env', 'JENKINS_ADMIN_ID') }}"
+    JENKINS_ADMIN_PASSWORD: "{{ lookup('env', 'JENKINS_ADMIN_PASSWORD') }}"
+    JENKINS_RESERVE_URL: "{{ lookup('env', 'JENKINS_RESERVE_URL') }}"
+    DATASOURCE_PASSWORD: "{{ lookup('env', 'DATASOURCE_PASSWORD') }}"
+    DATASOURCE_URL: "{{ lookup('env', 'DATASOURCE_URL') }}"
+    DATASOURCE_USER: "{{ lookup('env', 'DATASOURCE_USER') }}"
+    JWT_SECRET: "{{ lookup('env', 'JWT_SECRET') }}"
+    MY_PASSWORD: "{{ lookup('env', 'MY_PASSWORD') }}"
+    SUBSCRIPTION_ID: "{{ lookup('env', 'SUBSCRIPTION_ID') }}"
+    VMIP: "{{ lookup('env', 'VMIP') }}"
+    SSH_PRIVATE_FILE_PATH: "{{ lookup('env', 'SSH_PRIVATE_FILE_PATH') }}"
+    CHAT_ID: "{{ lookup('env', 'CHAT_ID') }}"
+    TELEGRAM_TOKEN: "{{ lookup('env', 'TELEGRAM_TOKEN') }}"
+    SONAR_TOKEN: "{{ lookup('env', 'SONAR_TOKEN') }}"
+    SONAR_SERVER: "{{ lookup('env', 'SONAR_SERVER') }}"
+    NEXUS_SERVER: "{{ lookup('env', 'NEXUS_SERVER') }}"
+    NEXUS_USER: "{{ lookup('env', 'NEXUS_USER') }}"
+    NEXUS_PASSWORD: "{{ lookup('env', 'NEXUS_PASSWORD') }}"
+
+  docker_container:
+    name: JenkinsTest
+    image: "{{ acrAddress }}/jenkins:ansible"
+    detach: yes
+    ports:
+      - 8282:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env:
+      JENKINS_ADMIN_ID: "{{ JENKINS_ADMIN_ID }}"
+      JENKINS_ADMIN_PASSWORD: "{{ JENKINS_ADMIN_PASSWORD }}"
+      JENKINS_RESERVE_URL: "{{ JENKINS_RESERVE_URL }}"
+      ACR_ADDR: "{{ acrAddress }}"
+      ACR_PASS: "{{ acrPassword }}"
+      ACR_UID: "{{ acrUsername }}"
+      DATASOURCE_PASSWORD: "{{ DATASOURCE_PASSWORD }}"
+      DATASOURCE_URL: "{{ DATASOURCE_URL }}"
+      DATASOURCE_USER: "{{ DATASOURCE_USER }}"
+      JWT_SECRET: "{{ JWT_SECRET }}"
+      MY_PASSWORD: "{{ MY_PASSWORD}}"
+      SUBSCRIPTION_ID: "{{ SUBSCRIPTION_ID }}"
+      VMIP: "{{ VMIP }}"
+      SSH_PRIVATE_FILE_PATH: "{{ SSH_PRIVATE_FILE_PATH }}"
+      CHAT_ID: "{{ CHAT_ID }}"
+      TELEGRAM_TOKEN: "{{ TELEGRAM_TOKEN }}"
+      SONAR_TOKEN: "{{ SONAR_TOKEN }}"
+      SONAR_SERVER: "{{ SONAR_SERVER }}"
+      NEXUS_SERVER: "{{ NEXUS_SERVER }}"
+      NEXUS_USER: "{{ NEXUS_USER }}"
+      NEXUS_PASSWORD: "{{ NEXUS_PASSWORD }}"
