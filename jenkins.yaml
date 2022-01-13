@@ -10,7 +10,7 @@
       acrAddress: "{{ ACR_ADDR }}"
       acrUsername: "{{ ACR_UID }}"
       acrPassword: "{{ ACR_PASS }}"
-      JENKINS_ADMIN_ID: "{{ JENKINS_ADMIN_ID }}"
+      #JENKINS_ADMIN_ID: "{{ admin }}"
       JENKINS_ADMIN_PASSWORD: "{{ JENKINS_ADMIN_PASSWORD }}"
       JENKINS_RESERVE_URL: "{{ JENKINS_RESERVE_URL }}"
       DATASOURCE_PASSWORD: "{{ DATASOURCE_PASSWORD }}"
