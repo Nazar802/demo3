@@ -28,6 +28,8 @@
     password: "{{ acrPassword }}"
 
 - name: build and push docker image
+  vars:
+    acrAddress: "{{ lookup('env', 'ACR_ADDR') }}"
   docker_image:
     name: "{{ acrAddress }}/jenkins:ansible"
     build:
