@@ -10,7 +10,7 @@ throttle(['Lock']) {
                 remote.user = 'azureuser'
                 remote.allowAnyHosts = true    
                 
-                /*stage ('Terraform destroy') {
+                stage ('Terraform destroy') {
                     writeFile file: 'cleanup.sh', text:
                     "cd ~/cluster\nterraform destroy -auto-approve\n cd ..\nrm -rf cluster"
                     sshScript remote: remote, script: "cleanup.sh"
@@ -25,7 +25,7 @@ throttle(['Lock']) {
                     writeFile file: 'start.sh', text:
                     "cd ~/cluster\nterraform init\nterraform apply -auto-approve"
                     sshScript remote: remote, script: "start.sh"
-                }*/
+                }
                 
                 stage ('Connect to cluster') {
                     writeFile file: 'connect.sh', text:
