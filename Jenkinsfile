@@ -10,7 +10,7 @@ throttle(['Lock']) {
                 remote.user = 'azureuser'
                 remote.allowAnyHosts = true    
                 
-                */stage ('Terraform destroy') {
+                /*stage ('Terraform destroy') {
                     writeFile file: 'cleanup.sh', text:
                     "cd ~/cluster\nterraform destroy -auto-approve\n cd ..\nrm -rf cluster"
                     sshScript remote: remote, script: "cleanup.sh"
@@ -31,7 +31,7 @@ throttle(['Lock']) {
                     writeFile file: 'connect.sh', text:
                     "az account set --subscription ${SUBSCRIPTION_ID}\naz aks get-credentials --resource-group azure-k8stest --name k8stest --overwrite-existing"
                     sshScript remote: remote, script: "connect.sh"
-                }
+                }*/
                 
                 stage ('Connect to ACR') {
                     writeFile file: 'connect.sh', text:
@@ -39,7 +39,7 @@ throttle(['Lock']) {
                     sshScript remote: remote, script: "connect.sh"
                 }
                 
-            }*/
+            }
             withCredentials([string(credentialsId: 'chatID', variable: 'notif')]) {
                 sh  ("""
                 curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text=' Kubernetes job succeeded'
