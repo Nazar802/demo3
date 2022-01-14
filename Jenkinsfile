@@ -25,13 +25,13 @@ throttle(['Lock']) {
                     writeFile file: 'start.sh', text:
                     "cd ~/cluster\nterraform init\nterraform apply -auto-approve"
                     sshScript remote: remote, script: "start.sh"
-                }
+                }*/
                 
                 stage ('Connect to cluster') {
                     writeFile file: 'connect.sh', text:
-                    "az account set --subscription ${SUBSCRIPTION_ID}\naz aks get-credentials --resource-group azure-k8stest --name k8stest --overwrite-existing"
+                    "az account set --subscription ${SUBSCRIPTION_ID}\naz aks get-credentials --resource-group azure-k8 --name k8stest --overwrite-existing"
                     sshScript remote: remote, script: "connect.sh"
-                }*/
+                }
                 
                 stage ('Connect to ACR') {
                     writeFile file: 'connect.sh', text:
