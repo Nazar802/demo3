@@ -29,7 +29,7 @@ throttle(['Lock']) {
                 
                 stage ('Connect to cluster') {
                     writeFile file: 'connect.sh', text:
-                    "az account set --subscription ${SUBSCRIPTION_ID}\naz aks get-credentials --resource-group azure-k8 --name k8stest --overwrite-existing"
+                    "az account set --subscription ${SUBSCRIPTION_ID}\naz aks get-credentials --resource-group azure-k8s --name k8stest --overwrite-existing"
                     sshScript remote: remote, script: "connect.sh"
                 }
                 
